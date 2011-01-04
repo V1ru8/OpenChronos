@@ -91,7 +91,7 @@ def set_encoding( encoding ):
         _use_dec_special = True
 
     # if encoding is valid for conversion from unicode, remember it
-    _target_encoding = 'ascii'
+    _target_encoding = 'utf8'
     try:    
         if encoding:
             u"".encode(encoding)

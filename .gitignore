@@ -6,3 +6,6 @@
 build
 TAGS
 doc/*.html
+*.mode2v3
+*.pbxuser
+*.mode1v3

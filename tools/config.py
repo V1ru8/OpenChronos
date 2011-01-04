@@ -178,6 +178,13 @@ DATA["CONFIG_STRENGTH"] = {
     "help": "Timer for strength training studios which have you perform repetitions for 90 seconds, e.g. Kieser Training"
 }
 
+DATA["CONFIG_TIDE"] = {
+    "name": "Tide Watch",
+    "depends": [],
+    "default": False,
+    "help": "A graphical tide watch"
+}
+
 # not yet working
 DATA["CONFIG_ALARM"] = {
         "name": "Alarm",

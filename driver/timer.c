@@ -92,6 +92,10 @@
 #include "strength.h"
 #endif
 
+#ifdef CONFIG_TIDE
+#include "tide.h"
+#endif
+
 // *************************************************************************************************
 // Prototypes section
 void Timer0_Init(void);
@@ -381,6 +385,10 @@ __interrupt void TIMER0_A0_ISR(void)
 	{
 		strength_tick();
 	}            
+#endif
+	
+#ifdef CONFIG_TIDE
+	tide_tick();
 #endif
 
 	// Do a temperature measurement each second while menu item is active

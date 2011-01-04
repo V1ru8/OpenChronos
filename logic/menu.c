@@ -92,6 +92,10 @@
 #include "strength.h"
 #endif
 
+#ifdef CONFIG_TIDE
+#include "tide.h"
+#endif
+
 // *************************************************************************************************
 // Defines section
 #define FUNCTION(function)  function
@@ -382,6 +386,18 @@ const struct menu menu_L1_Strength =
 };
 #endif
 
+#ifdef CONFIG_TIDE
+// Line2 - Tide Watch
+const struct menu menu_L2_Tide =
+{
+	FUNCTION(sx_tide),					// direct function
+	FUNCTION(mx_tide),					// sub menu function
+	FUNCTION(menu_skip_next),			// next item function
+	FUNCTION(display_tide),				// display function
+	FUNCTION(tide_display_needs_updating),	// new display data
+};
+#endif
+
 // *************************************************************************************************
 // menu array
 
@@ -433,7 +449,10 @@ const struct menu *menu_L2[]={
 	&menu_L2_RFBSL,
 	#ifdef CONFIG_PROUT
 	&menu_L2_Prout,
-	#endif	
+	#endif
+	#ifdef CONFIG_TIDE
+	&menu_L2_Tide,
+	#endif
 };
 
 const int menu_L2_size=sizeof(menu_L2)/sizeof(struct menu*);
