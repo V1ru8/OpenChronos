@@ -41,7 +41,6 @@
 		0FD6126912A3A7C300DE2B9F /* vti_as.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vti_as.h; sourceTree = "<group>"; };
 		0FD6126A12A3A7C300DE2B9F /* vti_ps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vti_ps.c; sourceTree = "<group>"; };
 		0FD6126B12A3A7C300DE2B9F /* vti_ps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vti_ps.h; sourceTree = "<group>"; };
-		0FD6126C12A3A7C300DE2B9F /* even_in_range.o */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.objfile"; path = even_in_range.o; sourceTree = "<group>"; };
 		0FD6126D12A3A7C300DE2B9F /* even_in_range.s */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.asm; path = even_in_range.s; sourceTree = "<group>"; };
 		0FD6126E12A3A7C300DE2B9F /* ez430_chronos.ewd */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ez430_chronos.ewd; sourceTree = "<group>"; };
 		0FD6126F12A3A7C300DE2B9F /* ez430_chronos.ewp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; path = ez430_chronos.ewp; sourceTree = "<group>"; };
@@ -158,54 +157,32 @@
 		0FD612F812A3A7C300DE2B9F /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
 		0FD612F912A3A7C300DE2B9F /* config.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = config.py; sourceTree = "<group>"; };
 		0FD612FA12A3A7C300DE2B9F /* elf.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = elf.py; sourceTree = "<group>"; };
-		0FD612FB12A3A7C300DE2B9F /* elf.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = elf.pyc; sourceTree = "<group>"; };
 		0FD612FC12A3A7C300DE2B9F /* memory.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = memory.py; sourceTree = "<group>"; };
 		0FD612FD12A3A7C300DE2B9F /* sorteddict.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = sorteddict.py; sourceTree = "<group>"; };
-		0FD612FE12A3A7C300DE2B9F /* sorteddict.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = sorteddict.pyc; sourceTree = "<group>"; };
 		0FD612FF12A3A7C300DE2B9F /* step_crash_detector.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = step_crash_detector.py; sourceTree = "<group>"; };
 		0FD6130112A3A7C300DE2B9F /* __init__.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = __init__.py; sourceTree = "<group>"; };
-		0FD6130212A3A7C300DE2B9F /* __init__.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = __init__.pyc; sourceTree = "<group>"; };
 		0FD6130312A3A7C300DE2B9F /* canvas.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = canvas.py; sourceTree = "<group>"; };
-		0FD6130412A3A7C300DE2B9F /* canvas.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = canvas.pyc; sourceTree = "<group>"; };
 		0FD6130512A3A7C300DE2B9F /* command_map.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = command_map.py; sourceTree = "<group>"; };
-		0FD6130612A3A7C300DE2B9F /* command_map.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = command_map.pyc; sourceTree = "<group>"; };
 		0FD6130712A3A7C300DE2B9F /* container.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = container.py; sourceTree = "<group>"; };
-		0FD6130812A3A7C300DE2B9F /* container.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = container.pyc; sourceTree = "<group>"; };
 		0FD6130912A3A7C300DE2B9F /* curses_display.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = curses_display.py; sourceTree = "<group>"; };
 		0FD6130A12A3A7C300DE2B9F /* decoration.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = decoration.py; sourceTree = "<group>"; };
-		0FD6130B12A3A7C300DE2B9F /* decoration.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = decoration.pyc; sourceTree = "<group>"; };
 		0FD6130C12A3A7C300DE2B9F /* display_common.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = display_common.py; sourceTree = "<group>"; };
-		0FD6130D12A3A7C300DE2B9F /* display_common.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = display_common.pyc; sourceTree = "<group>"; };
 		0FD6130E12A3A7C300DE2B9F /* escape.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = escape.py; sourceTree = "<group>"; };
-		0FD6130F12A3A7C300DE2B9F /* escape.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = escape.pyc; sourceTree = "<group>"; };
 		0FD6131012A3A7C300DE2B9F /* font.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = font.py; sourceTree = "<group>"; };
-		0FD6131112A3A7C300DE2B9F /* font.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = font.pyc; sourceTree = "<group>"; };
 		0FD6131212A3A7C300DE2B9F /* graphics.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = graphics.py; sourceTree = "<group>"; };
-		0FD6131312A3A7C300DE2B9F /* graphics.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = graphics.pyc; sourceTree = "<group>"; };
 		0FD6131412A3A7C300DE2B9F /* html_fragment.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = html_fragment.py; sourceTree = "<group>"; };
 		0FD6131512A3A7C300DE2B9F /* listbox.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = listbox.py; sourceTree = "<group>"; };
-		0FD6131612A3A7C300DE2B9F /* listbox.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = listbox.pyc; sourceTree = "<group>"; };
 		0FD6131712A3A7C300DE2B9F /* main_loop.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = main_loop.py; sourceTree = "<group>"; };
-		0FD6131812A3A7C300DE2B9F /* main_loop.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = main_loop.pyc; sourceTree = "<group>"; };
 		0FD6131912A3A7C300DE2B9F /* monitored_list.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = monitored_list.py; sourceTree = "<group>"; };
-		0FD6131A12A3A7C300DE2B9F /* monitored_list.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = monitored_list.pyc; sourceTree = "<group>"; };
 		0FD6131B12A3A7C300DE2B9F /* old_str_util.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = old_str_util.py; sourceTree = "<group>"; };
-		0FD6131C12A3A7C300DE2B9F /* old_str_util.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = old_str_util.pyc; sourceTree = "<group>"; };
 		0FD6131D12A3A7C300DE2B9F /* raw_display.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = raw_display.py; sourceTree = "<group>"; };
-		0FD6131E12A3A7C300DE2B9F /* raw_display.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = raw_display.pyc; sourceTree = "<group>"; };
 		0FD6131F12A3A7C400DE2B9F /* signals.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = signals.py; sourceTree = "<group>"; };
-		0FD6132012A3A7C400DE2B9F /* signals.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = signals.pyc; sourceTree = "<group>"; };
 		0FD6132112A3A7C400DE2B9F /* split_repr.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = split_repr.py; sourceTree = "<group>"; };
-		0FD6132212A3A7C400DE2B9F /* split_repr.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = split_repr.pyc; sourceTree = "<group>"; };
 		0FD6132312A3A7C400DE2B9F /* text_layout.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = text_layout.py; sourceTree = "<group>"; };
-		0FD6132412A3A7C400DE2B9F /* text_layout.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = text_layout.pyc; sourceTree = "<group>"; };
 		0FD6132512A3A7C400DE2B9F /* util.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = util.py; sourceTree = "<group>"; };
-		0FD6132612A3A7C400DE2B9F /* util.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = util.pyc; sourceTree = "<group>"; };
 		0FD6132712A3A7C400DE2B9F /* web_display.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = web_display.py; sourceTree = "<group>"; };
 		0FD6132812A3A7C400DE2B9F /* widget.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = widget.py; sourceTree = "<group>"; };
-		0FD6132912A3A7C400DE2B9F /* widget.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = widget.pyc; sourceTree = "<group>"; };
 		0FD6132A12A3A7C400DE2B9F /* wimp.py */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.python; path = wimp.py; sourceTree = "<group>"; };
-		0FD6132B12A3A7C400DE2B9F /* wimp.pyc */ = {isa = PBXFileReference; lastKnownFileType = file; path = wimp.pyc; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
@@ -218,7 +195,6 @@
 				0FD6124D12A3A7C300DE2B9F /* contrib */,
 				0FD6125012A3A7C300DE2B9F /* doc */,
 				0FD6125212A3A7C300DE2B9F /* driver */,
-				0FD6126C12A3A7C300DE2B9F /* even_in_range.o */,
 				0FD6126D12A3A7C300DE2B9F /* even_in_range.s */,
 				0FD6126E12A3A7C300DE2B9F /* ez430_chronos.ewd */,
 				0FD6126F12A3A7C300DE2B9F /* ez430_chronos.ewp */,
@@ -611,10 +587,8 @@
 				0FD612F812A3A7C300DE2B9F /* __init__.py */,
 				0FD612F912A3A7C300DE2B9F /* config.py */,
 				0FD612FA12A3A7C300DE2B9F /* elf.py */,
-				0FD612FB12A3A7C300DE2B9F /* elf.pyc */,
 				0FD612FC12A3A7C300DE2B9F /* memory.py */,
 				0FD612FD12A3A7C300DE2B9F /* sorteddict.py */,
-				0FD612FE12A3A7C300DE2B9F /* sorteddict.pyc */,
 				0FD612FF12A3A7C300DE2B9F /* step_crash_detector.py */,
 				0FD6130012A3A7C300DE2B9F /* urwid */,
 			);
@@ -625,48 +599,28 @@
 			isa = PBXGroup;
 			children = (
 				0FD6130112A3A7C300DE2B9F /* __init__.py */,
-				0FD6130212A3A7C300DE2B9F /* __init__.pyc */,
 				0FD6130312A3A7C300DE2B9F /* canvas.py */,
-				0FD6130412A3A7C300DE2B9F /* canvas.pyc */,
 				0FD6130512A3A7C300DE2B9F /* command_map.py */,
-				0FD6130612A3A7C300DE2B9F /* command_map.pyc */,
 				0FD6130712A3A7C300DE2B9F /* container.py */,
-				0FD6130812A3A7C300DE2B9F /* container.pyc */,
 				0FD6130912A3A7C300DE2B9F /* curses_display.py */,
 				0FD6130A12A3A7C300DE2B9F /* decoration.py */,
-				0FD6130B12A3A7C300DE2B9F /* decoration.pyc */,
 				0FD6130C12A3A7C300DE2B9F /* display_common.py */,
-				0FD6130D12A3A7C300DE2B9F /* display_common.pyc */,
 				0FD6130E12A3A7C300DE2B9F /* escape.py */,
-				0FD6130F12A3A7C300DE2B9F /* escape.pyc */,
 				0FD6131012A3A7C300DE2B9F /* font.py */,
-				0FD6131112A3A7C300DE2B9F /* font.pyc */,
 				0FD6131212A3A7C300DE2B9F /* graphics.py */,
-				0FD6131312A3A7C300DE2B9F /* graphics.pyc */,
 				0FD6131412A3A7C300DE2B9F /* html_fragment.py */,
 				0FD6131512A3A7C300DE2B9F /* listbox.py */,
-				0FD6131612A3A7C300DE2B9F /* listbox.pyc */,
 				0FD6131712A3A7C300DE2B9F /* main_loop.py */,
-				0FD6131812A3A7C300DE2B9F /* main_loop.pyc */,
 				0FD6131912A3A7C300DE2B9F /* monitored_list.py */,
-				0FD6131A12A3A7C300DE2B9F /* monitored_list.pyc */,
 				0FD6131B12A3A7C300DE2B9F /* old_str_util.py */,
-				0FD6131C12A3A7C300DE2B9F /* old_str_util.pyc */,
 				0FD6131D12A3A7C300DE2B9F /* raw_display.py */,
-				0FD6131E12A3A7C300DE2B9F /* raw_display.pyc */,
 				0FD6131F12A3A7C400DE2B9F /* signals.py */,
-				0FD6132012A3A7C400DE2B9F /* signals.pyc */,
 				0FD6132112A3A7C400DE2B9F /* split_repr.py */,
-				0FD6132212A3A7C400DE2B9F /* split_repr.pyc */,
 				0FD6132312A3A7C400DE2B9F /* text_layout.py */,
-				0FD6132412A3A7C400DE2B9F /* text_layout.pyc */,
 				0FD6132512A3A7C400DE2B9F /* util.py */,
-				0FD6132612A3A7C400DE2B9F /* util.pyc */,
 				0FD6132712A3A7C400DE2B9F /* web_display.py */,
 				0FD6132812A3A7C400DE2B9F /* widget.py */,
-				0FD6132912A3A7C400DE2B9F /* widget.pyc */,
 				0FD6132A12A3A7C400DE2B9F /* wimp.py */,
-				0FD6132B12A3A7C400DE2B9F /* wimp.pyc */,
 			);
 			path = urwid;
 			sourceTree = "<group>";
@@ -695,7 +649,6 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB919308733D9F0010E9CD /* Build configuration list for PBXProject "OpenChronos" */;
 			compatibilityVersion = "Xcode 3.1";
-			developmentRegion = English;
 			hasScannedForEncodings = 1;
 			knownRegions = (
 				English,

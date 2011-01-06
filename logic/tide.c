@@ -42,11 +42,11 @@ const u8 waveFormBits[] = {
 void update_tide_timer() {
 }
 
-u32 timeInSeconds(struct tide theTide) {
+u16 timeInSeconds(struct tide theTide) {
 	return theTide.secondsLeft + theTide.minutesLeft * 60 + theTide.hoursLeft * 3600;
 }
 
-struct tide timeFromSeconds(u32 seconds) {
+struct tide timeFromSeconds(u16 seconds) {
 	struct tide newTide;
 	newTide.hoursLeft = seconds/3600;
 	seconds -= newTide.hoursLeft*3600;
@@ -66,15 +66,15 @@ void tide_tick() {
 		aTide.hoursLeft = 12;
 		init = 1;
 	}
-	u32 tideInSecondes =  aTide.secondsLeft + aTide.minutesLeft * 60 + aTide.hoursLeft * 3600;
-	graphOffset = (44700 - tideInSecondes)/11175;
+	u16 tideInSecondes =  aTide.secondsLeft + aTide.minutesLeft * 60 + aTide.hoursLeft * 3600;
+	graphOffset = (((u16)44700) - tideInSecondes)/((u16)11175);
 	
 	if (aTide.secondsLeft == 0) {
 		aTide.secondsLeft = 60;
 		if (aTide.minutesLeft == 0) {
 			aTide.minutesLeft = 60;
 			if (aTide.hoursLeft == 0) {
-				aTide = timeFromSeconds(44701);
+				aTide = timeFromSeconds((u16)44701);
 				return;
 			}
 			aTide.hoursLeft--;
@@ -157,8 +157,8 @@ void display_tide(u8 line, u8 mode) {
 			display_char(LCD_SEG_L2_4, 'H', SEG_ON);
 			
 			//calculate time left untli next high tide
-			u32 leftUntilLow = timeInSeconds(aTide);
-			u32 leftUntilHigh = 22350; //22350 is seconds from low to gigh
+			u16 leftUntilLow = timeInSeconds(aTide);
+			u16 leftUntilHigh = (u16)22350; //22350 is seconds from low to gigh
 			if (leftUntilLow > leftUntilHigh) {	
 				leftUntilHigh = leftUntilLow - leftUntilHigh;
 			} else {
