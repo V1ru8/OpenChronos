@@ -9,10 +9,13 @@
 
 #include "project.h"
 
-#include "buzzer.h"
-#include "display.h"
-#include "clock.h"
 #include "tide.h"
+
+#include "buzzer.h"
+#include "clock.h"
+#include "display.h"
+#include "ports.h"
+#include "user.h"
 
 typedef enum {
 	TideDisplayState_Graph = 0,
@@ -21,6 +24,12 @@ typedef enum {
 	//editing mode
 	TideDisplayState_Editing,
 } TideDisplayState;
+
+typedef enum {
+	TideDisplayEditState_Hour = 0,
+	TideDisplayEditState_Minute,
+	TideDisplayEditState_Second,
+} TideDisplayEditState;
 
 TideDisplayState displayState = TideDisplayState_Graph;
 
@@ -91,7 +100,71 @@ void sx_tide(u8 line) {
 }
 
 void mx_tide(u8 line) {
-	//start_buzzer(2, BUZZER_ON_TICKS, BUZZER_OFF_TICKS);
+	
+	//Clear display
+	clear_display_all();
+	
+	TideDisplayEditState state = TideDisplayEditState_Hour;
+	u8 displayMode = SETVALUE_ROLLOVER_VALUE | SETVALUE_DISPLAY_VALUE | SETVALUE_NEXT_VALUE;
+	
+	s32 hours = aTide.hoursLeft;
+	s32 minutes = aTide.minutesLeft;
+	s32 seconds = aTide.secondsLeft;
+		
+	u8 *strMinutes = itoa(minutes, 2, 1);
+	display_chars(LCD_SEG_L2_3_2, strMinutes, SEG_ON);
+		
+	u8 *strSeconds = itoa(seconds, 2, 1);
+	display_chars(LCD_SEG_L2_1_0, strSeconds, SEG_ON);
+	
+	display_symbol(LCD_SEG_L2_COL1, SEG_ON);
+	display_symbol(LCD_SEG_L2_COL0, SEG_ON);
+	
+	display_chars(LCD_SEG_L1_3_0, "L IN", SEG_ON);
+	
+	while (1) {
+		//Idle timeout: exit without saving
+		if (sys.flag.idle_timeout) {
+			break;
+		}
+		
+		if (button.flag.star) {
+			aTide.hoursLeft = hours;
+			aTide.minutesLeft = minutes;
+			aTide.secondsLeft = seconds;
+			break;
+		}
+		
+		switch (state) {
+			case TideDisplayEditState_Hour:
+			{
+				set_value(&hours, 2, 0, 0, 12, displayMode, LCD_SEG_L2_5_4, display_value1);
+				state = TideDisplayEditState_Minute;
+				break;
+			}
+			case TideDisplayEditState_Minute:
+			{
+				set_value(&minutes, 2, 1, 0, 59, displayMode, LCD_SEG_L2_3_2, display_value1);
+				state = TideDisplayEditState_Second;
+				break;
+			}
+			case TideDisplayEditState_Second:
+			{
+				set_value(&seconds, 2, 1, 0, 59, displayMode, LCD_SEG_L2_1_0, display_value1);
+				state = TideDisplayEditState_Hour;
+				break;
+			}
+			default:
+				break;
+		}
+		
+	}
+	
+	// Clear button flag
+	button.all_flags = 0;
+	
+	display_symbol(LCD_SEG_L2_COL1, SEG_OFF);
+	display_symbol(LCD_SEG_L2_COL0, SEG_OFF);
 }
 
 void display_tide(u8 line, u8 mode) {
@@ -167,7 +240,7 @@ void display_tide(u8 line, u8 mode) {
 			struct tide highTide = timeFromSeconds(leftUntilHigh);
 
 			//show the gighTide			
-			display_chars(LCD_SEG_L2_3, itoa(highTide.hoursLeft, 2, 0), SEG_ON);
+			display_chars(LCD_SEG_L2_3, itoa(highTide.hoursLeft, 2, 1), SEG_ON);
 			display_chars(LCD_SEG_L2_2, itoa(highTide.hoursLeft, 1, 0), SEG_ON);
 			display_chars(LCD_SEG_L2_1, itoa(highTide.minutesLeft, 2, 0), SEG_ON);
 			display_chars(LCD_SEG_L2_0, itoa(highTide.minutesLeft, 1, 0), SEG_ON);
@@ -179,7 +252,7 @@ void display_tide(u8 line, u8 mode) {
 			display_char(LCD_SEG_L2_4, 'L', SEG_ON);
 			
 			
-			display_chars(LCD_SEG_L2_3, itoa(aTide.hoursLeft, 2, 0), SEG_ON);
+			display_chars(LCD_SEG_L2_3, itoa(aTide.hoursLeft, 2, 1), SEG_ON);
 			display_chars(LCD_SEG_L2_2, itoa(aTide.hoursLeft, 1, 0), SEG_ON);
 			display_chars(LCD_SEG_L2_1, itoa(aTide.minutesLeft, 2, 0), SEG_ON);
 			display_chars(LCD_SEG_L2_0, itoa(aTide.minutesLeft, 1, 0), SEG_ON);
