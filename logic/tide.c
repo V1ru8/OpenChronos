@@ -14,6 +14,7 @@
 #include "buzzer.h"
 #include "clock.h"
 #include "display.h"
+#include "menu.h"
 #include "ports.h"
 #include "user.h"
 
@@ -51,8 +52,16 @@ const u8 waveFormBits[] = {
 void update_tide_timer() {
 }
 
-u16 timeInSeconds(struct tide theTide) {
+u32 timeInSeconds(struct tide theTide) {
 	return theTide.secondsLeft + theTide.minutesLeft * 60 + theTide.hoursLeft * 3600;
+}
+
+u32 timeNowInSeconds() {
+	struct tide timeNow;
+	timeNow.hoursLeft = sTime.hour;
+	timeNow.minutesLeft = sTime.minute;
+	timeNow.secondsLeft = sTime.second;
+	return timeInSeconds(timeNow);
 }
 
 struct tide timeFromSeconds(u16 seconds) {
@@ -107,9 +116,15 @@ void mx_tide(u8 line) {
 	TideDisplayEditState state = TideDisplayEditState_Hour;
 	u8 displayMode = SETVALUE_ROLLOVER_VALUE | SETVALUE_DISPLAY_VALUE | SETVALUE_NEXT_VALUE;
 	
-	s32 hours = aTide.hoursLeft;
-	s32 minutes = aTide.minutesLeft;
-	s32 seconds = aTide.secondsLeft;
+	s32 secondsToLowTide = timeInSeconds(aTide);
+	s32 nowInSeconds = timeNowInSeconds();
+	
+	s32 lowTideTime = (nowInSeconds + secondsToLowTide)  % (u32)86400;
+	
+	struct tide lowTide = timeFromSeconds(lowTideTime); 
+	s32 hours = lowTide.hoursLeft;
+	s32 minutes = lowTide.minutesLeft;
+	s32 seconds = lowTide.secondsLeft;
 		
 	u8 *strMinutes = itoa(minutes, 2, 1);
 	display_chars(LCD_SEG_L2_3_2, strMinutes, SEG_ON);
@@ -117,11 +132,12 @@ void mx_tide(u8 line) {
 	u8 *strSeconds = itoa(seconds, 2, 1);
 	display_chars(LCD_SEG_L2_1_0, strSeconds, SEG_ON);
 	
-	display_symbol(LCD_SEG_L2_COL1, SEG_ON);
 	display_symbol(LCD_SEG_L2_COL0, SEG_ON);
 	
-	display_chars(LCD_SEG_L1_3_0, "L IN", SEG_ON);
+	display_chars(LCD_SEG_L1_3_2, (u8 *)"L ", SEG_ON);
+	display_chars(LCD_SEG_L2_5_4, (u8 *)"  ", SEG_ON);
 	
+	//request to the user to enter the time of the next low tide
 	while (1) {
 		//Idle timeout: exit without saving
 		if (sys.flag.idle_timeout) {
@@ -129,16 +145,28 @@ void mx_tide(u8 line) {
 		}
 		
 		if (button.flag.star) {
-			aTide.hoursLeft = hours;
-			aTide.minutesLeft = minutes;
-			aTide.secondsLeft = seconds;
+			struct tide enteredTide;
+			enteredTide.hoursLeft = hours;
+			enteredTide.minutesLeft = minutes;
+			enteredTide.secondsLeft = seconds;
+			
+			s32 nextLowSeconds = timeInSeconds(enteredTide);
+			s32 nowInSeconds = timeNowInSeconds();
+			
+			s32 diff = nextLowSeconds - nowInSeconds;
+			if (diff < 0) {
+				diff = ((s32)86400 - nowInSeconds) + nextLowSeconds;
+			}
+			
+			aTide = timeFromSeconds(diff);
+			
 			break;
 		}
 		
 		switch (state) {
 			case TideDisplayEditState_Hour:
 			{
-				set_value(&hours, 2, 0, 0, 12, displayMode, LCD_SEG_L2_5_4, display_value1);
+				set_value(&hours, 2, 0, 0, 23, displayMode, LCD_SEG_L1_1_0, display_value1);
 				state = TideDisplayEditState_Minute;
 				break;
 			}
@@ -223,6 +251,9 @@ void display_tide(u8 line, u8 mode) {
 			}
 			//marker for 'now'
 			display_symbol(LCD_SEG_L2_COL1, SEG_ON);
+			
+			//reset line 1
+			menu_L1[menu_L1_position]->display_function(LINE1, mode);
 			break;
 		}
 		case TideDisplayState_ToHighCounter:
@@ -245,6 +276,15 @@ void display_tide(u8 line, u8 mode) {
 			display_chars(LCD_SEG_L2_1, itoa(highTide.minutesLeft, 2, 0), SEG_ON);
 			display_chars(LCD_SEG_L2_0, itoa(highTide.minutesLeft, 1, 0), SEG_ON);
 			display_symbol(LCD_SEG_L2_COL0, SEG_ON_BLINK_ON);
+			
+			//calculate the time of the next high tide
+			u32 nowInSeconds = timeNowInSeconds();
+			u32 hightTideTime = (nowInSeconds + leftUntilHigh) % (u32)86400;
+			
+			struct tide timeNow = timeFromSeconds(hightTideTime);
+			display_chars(LCD_SEG_L1_3_2, itoa(timeNow.hoursLeft, 2, 1), SEG_ON);
+			display_chars(LCD_SEG_L1_1_0, itoa(timeNow.minutesLeft, 2, 0), SEG_ON);
+						
 			break;
 		}
 		case TideDisplayState_ToLowCounter:
@@ -257,6 +297,16 @@ void display_tide(u8 line, u8 mode) {
 			display_chars(LCD_SEG_L2_1, itoa(aTide.minutesLeft, 2, 0), SEG_ON);
 			display_chars(LCD_SEG_L2_0, itoa(aTide.minutesLeft, 1, 0), SEG_ON);
 			display_symbol(LCD_SEG_L2_COL0, SEG_ON_BLINK_ON);
+			
+			//calculate the time of the next high tide
+			u32 lowInSeconds = timeInSeconds(aTide);
+			u32 nowInSeconds = timeNowInSeconds();
+			u32 lowTideTime = (nowInSeconds + lowInSeconds) % (u32)86400;
+			
+			struct tide timeNow = timeFromSeconds(lowTideTime);
+			display_chars(LCD_SEG_L1_3_2, itoa(timeNow.hoursLeft, 2, 1), SEG_ON);
+			display_chars(LCD_SEG_L1_1_0, itoa(timeNow.minutesLeft, 2, 0), SEG_ON);
+			
 			break;
 		}
 		default:
