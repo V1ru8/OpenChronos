@@ -65,14 +65,6 @@
 #include "acceleration.h"
 #endif
 
-#ifdef CONFIG_PROUT
-#include "prout.h"
-#endif
-
-#ifdef CONFIG_VARIO
-#include "vario.h"
-#endif
-
 //pfs
 #ifndef ELIMINATE_BLUEROBIN
 #include "bluerobin.h"
@@ -100,13 +92,15 @@
 // Prototypes section
 void Timer0_Init(void);
 void Timer0_Stop(void);
-void Timer0_A1_Start(void);
+void Timer0_A1_Start(u16 ticks);
 void Timer0_A1_Stop(void);
 void Timer0_A3_Start(u16 ticks);
 void Timer0_A3_Stop(void);
 void Timer0_A4_Delay(u16 ticks);
 void (*fptr_Timer0_A3_function)(void);
- 
+#ifdef CONFIG_USE_GPS
+void (*fptr_Timer0_A1_function)(void);
+#endif
 
 // *************************************************************************************************
 // Defines section
@@ -171,13 +165,31 @@ void Timer0_Stop(void)
 }
 
 
-void Timer0_A1_Start(void)
+void Timer0_A1_Start(u16 ticks)
 {
+	/*old version
 	// Set interrupt frequency to 1Hz
 	TA0CCR1   = TA0R + 32678 ;
 
 	// Enable timer interrupt
-	TA0CCTL1 |= CCIE;
+	TA0CCTL1 |= CCIE; */
+
+	u16 value;
+
+		// Store timer ticks in global variable
+		sTimer.timer0_A1_ticks = ticks;
+
+		// Delay based on current counter value
+		value = TA0R + ticks;
+
+		// Update CCR
+		TA0CCR1 = value;
+
+		// Reset IRQ flag
+		TA0CCTL1 &= ~CCIFG;
+
+		// Enable timer interrupt
+		TA0CCTL1 |= CCIE;
 	
 }
 
@@ -271,8 +283,10 @@ void Timer0_A4_Delay(u16 ticks)
 		// Service watchdog
 		WDTCTL = WDTPW + WDTIS__512K + WDTSSEL__ACLK + WDTCNTCL;
 #endif
+#ifdef CONFIG_STOP_WATCH
 		// Redraw stopwatch display
 		if (is_stopwatch_run()) display_stopwatch(LINE2, DISPLAY_LINE_UPDATE_PARTIAL);
+#endif
 
 		// Check stop condition
 		if (sys.flag.delay_over) break;
@@ -346,16 +360,21 @@ __interrupt void TIMER0_A0_ISR(void)
 	// Service modules that require 1/min processing
 	if (sTime.drawFlag >= 2) 
 	{
+		#ifdef CONFIG_BATTERY
 		// Measure battery voltage to keep track of remaining battery life
 		request.flag.voltage_measurement = 1;
+		#endif
 		
+		#ifdef CONFIG_ALARM
 		// Check if alarm needs to be turned on
 		check_alarm();
+		#endif
 	}
 
 	// -------------------------------------------------------------------
 	// Service active modules that require 1/s processing
 	
+	#ifdef CONFIG_ALARM  // N8VI NOTE eventually, eggtimer should use this code too
 	// Generate alarm signal
 	if (sAlarm.state == ALARM_ON) 
 	{
@@ -370,14 +389,7 @@ __interrupt void TIMER0_A0_ISR(void)
 			stop_alarm();
 		}
 	}
-
-#ifdef CONFIG_PROUT
-        if (is_prout()) prout_tick();
-#endif
-
-#ifdef CONFIG_VARIO
-        if(is_vario()) vario_tick();
-#endif
+	#endif
 
 #ifdef CONFIG_STRENGTH
         // One more second gone by.
@@ -438,6 +450,7 @@ __interrupt void TIMER0_A0_ISR(void)
 	if (is_bluerobin()) get_bluerobin_data();
 #endif
 	
+	#ifdef CONFIG_BATTERY
 	// If battery is low, decrement display counter
 	if (sys.flag.low_battery)
 	{
@@ -448,6 +461,7 @@ __interrupt void TIMER0_A0_ISR(void)
 			sBatt.lobatt_display = BATTERY_LOW_MESSAGE_CYCLE;
 		}
 	}
+	#endif
 	
 	// If a message has to be displayed, set display flag
 	if (message.all_flags)
@@ -554,7 +568,7 @@ __interrupt void TIMER0_A0_ISR(void)
 // @fn          Timer0_A1_5_ISR
 // @brief       IRQ handler for timer IRQ.
 //				Timer0_A0	1/1sec clock tick (serviced by function TIMER0_A0_ISR)
-//				Timer0_A1	BlueRobin timer 
+//				Timer0_A1	BlueRobin timer / doorlock
 //				Timer0_A2	1/100 sec Stopwatch
 //				Timer0_A3	Configurable periodic IRQ (used by button_repeat and buzzer)
 //				Timer0_A4	One-time delay
@@ -608,6 +622,21 @@ __interrupt void TIMER0_A1_5_ISR(void)
 				display.flag.update_sidereal_time = 1;
 				break;
 	#endif
+	#ifdef CONFIG_USE_GPS
+		case 0x02: // Disable IE
+							TA0CCTL1 &= ~CCIE;
+							// Reset IRQ flag
+							TA0CCTL1 &= ~CCIFG;
+							// Store new value in CCR
+							value = TA0R + sTimer.timer0_A1_ticks; //timer0_A1_ticks_g;
+							// Load CCR register with next capture point
+							TA0CCR1 = value;
+							// Enable timer interrupt
+							TA0CCTL1 |= CCIE;
+							// Call function handler
+							fptr_Timer0_A1_function();
+							break;
+	#endif
 		// Timer0_A2	1/1 or 1/100 sec Stopwatch				
 		case 0x04:	// Timer0_A2 handler
 					// Disable IE 
@@ -615,14 +644,18 @@ __interrupt void TIMER0_A1_5_ISR(void)
 					// Reset IRQ flag  
 					TA0CCTL2 &= ~CCIFG;  
 					// Load CCR register with next capture point
+#ifdef CONFIG_STOP_WATCH
 					update_stopwatch_timer();
+#endif
 #ifdef CONFIG_EGGTIMER
 					update_eggtimer_timer();
 #endif
 					// Enable timer interrupt    
 					TA0CCTL2 |= CCIE; 	
 					// Increase stopwatch counter
+#ifdef CONFIG_STOP_WATCH
 					stopwatch_tick();
+#endif
 #ifdef CONFIG_EGGTIMER
 					eggtimer_tick();
 #endif

@@ -12,7 +12,7 @@
   you may not use, reproduce, copy, prepare derivative works of, modify, distribute,
   perform, display or sell this Software and/or its documentation for any purpose.
 
-  YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE PROVIDED “AS IS”
+  YOU FURTHER ACKNOWLEDGE AND AGREE THAT THE SOFTWARE AND DOCUMENTATION ARE PROVIDED ï¿½AS ISï¿½
   WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING WITHOUT LIMITATION, ANY
   WARRANTY OF MERCHANTABILITY, TITLE, NON-INFRINGEMENT AND FITNESS FOR A PARTICULAR PURPOSE.
   IN NO EVENT SHALL TEXAS INSTRUMENTS OR ITS LICENSORS BE LIABLE OR OBLIGATED UNDER CONTRACT,
@@ -28,6 +28,8 @@
 
 // *************************************************************************************************
 // Include section
+#include "project.h"
+
 #include "bsp.h"
 #include "mrfi.h"
 #include "nwk_types.h"
@@ -41,6 +43,13 @@
 
 // *************************************************************************************************
 // Defines section
+
+
+#if defined (CONFIG_USEPPT) || defined (CONFIG_EGGTIMER) || defined(CONFIG_ACCEL) || defined(CONFIG_USE_GPS)
+#define SIMPLICITI_TX_ONLY_REQ
+#endif
+
+
 #define TIMEOUT					(10u)
 
 // Conversion from msec to ACLK timer ticks
@@ -207,6 +216,7 @@ unsigned char simpliciti_link(void)
 }
 
 
+#ifdef SIMPLICITI_TX_ONLY_REQ
 
 // *************************************************************************************************
 // @fn          simpliciti_main_tx_only
@@ -296,7 +306,7 @@ void simpliciti_main_tx_only(void)
 	}
 }
 
-
+#endif
 
 // *************************************************************************************************
 // @fn          simpliciti_main_sync

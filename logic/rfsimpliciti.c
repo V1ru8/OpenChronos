@@ -76,7 +76,11 @@
 #ifdef CONFIG_SIDEREAL
 #include "sidereal.h"
 #endif
+// *************************************************************************************************
+// Defines section
 
+// Each packet index requires 2 bytes, so we can have 9 packet indizes in 18 bytes usable payload
+#define BM_SYNC_BURST_PACKETS_IN_DATA		(9u)
 
 // *************************************************************************************************
 // Prototypes section
@@ -84,12 +88,6 @@ void simpliciti_get_data_callback(void);
 void start_simpliciti_tx_only(simpliciti_mode_t mode);
 void start_simpliciti_sync(void);
 int simpliciti_get_rvc_callback(u8 len) __attribute__((noinline));
-
-// *************************************************************************************************
-// Defines section
-
-// Each packet index requires 2 bytes, so we can have 9 packet indizes in 18 bytes usable payload
-#define BM_SYNC_BURST_PACKETS_IN_DATA		(9u)
 
 
 // *************************************************************************************************
@@ -161,14 +159,15 @@ void sx_rf(u8 line)
 	//pfs
 	#ifndef ELIMINATE_BLUEROBIN
 	if (is_bluerobin()) return;
-  	#endif
+	#endif
 	#ifdef CONFIG_ACCEL
-  	// Start SimpliciTI in tx only mode
+	// Start SimpliciTI in tx only mode
 	start_simpliciti_tx_only(SIMPLICITI_ACCELERATION);
 	#endif
 }
 
 
+#ifdef CONFIG_USEPPT
 // *************************************************************************************************
 // @fn          sx_ppt
 // @brief       Start SimpliciTI. Button DOWN connects/disconnects to access point.
@@ -186,11 +185,12 @@ void sx_ppt(u8 line)
 	if (is_bluerobin()) return;
 	#endif
   	
-  	// Start SimpliciTI in tx only mode
+  // Start SimpliciTI in tx only mode
 	start_simpliciti_tx_only(SIMPLICITI_BUTTONS);
 }
+#endif
 
-
+#ifndef CONFIG_USE_SYNC_TOSET_TIME
 // *************************************************************************************************
 // @fn          sx_sync
 // @brief       Start SimpliciTI. Button DOWN connects/disconnects to access point.
@@ -210,8 +210,9 @@ void sx_sync(u8 line)
   	// Start SimpliciTI in sync mode
 	start_simpliciti_sync();
 }
+#endif
 
-
+#ifdef SIMPLICITI_TX_ONLY_REQ
 // *************************************************************************************************
 // @fn          start_simpliciti_tx_only
 // @brief       Start SimpliciTI (tx only). 
@@ -321,7 +322,7 @@ void start_simpliciti_tx_only(simpliciti_mode_t mode)
 	display.flag.full_update = 1;	
 	
 }
-
+#endif
 
 // *************************************************************************************************
 // @fn          display_rf
@@ -338,7 +339,7 @@ void display_rf(u8 line, u8 update)
 	}
 }
 
-
+#ifdef CONFIG_USEPPT
 // *************************************************************************************************
 // @fn          display_ppt
 // @brief       SimpliciTI display routine. 
@@ -353,6 +354,7 @@ void display_ppt(u8 line, u8 update)
 		display_chars(LCD_SEG_L2_5_0, (u8 *)"   PPT", SEG_ON);
 	}
 }
+#endif
 
 
 // *************************************************************************************************
@@ -572,6 +574,7 @@ WDTCTL = WDTPW + WDTHOLD;
 // @param       u8 lenght
 // @return      none
 // *************************************************************************************************
+#ifdef SIMPLICITI_TX_ONLY_REQ
 int simpliciti_get_rvc_callback(u8 len)
 {
 
@@ -590,6 +593,7 @@ int simpliciti_get_rvc_callback(u8 len)
     }
     return 0;
 }
+#endif
 
 // *************************************************************************************************
 // @fn          start_simpliciti_sync
@@ -600,8 +604,8 @@ int simpliciti_get_rvc_callback(u8 len)
 void start_simpliciti_sync(void)
 {
   	// Clear LINE1
-	clear_line(LINE1);  	
-	fptr_lcd_function_line1(LINE1, DISPLAY_LINE_CLEAR);
+	//clear_line(LINE1);
+	//fptr_lcd_function_line1(LINE1, DISPLAY_LINE_CLEAR);
 	
 	#ifdef FEATURE_PROVIDE_ACCEL
 	// Stop acceleration sensor
@@ -697,8 +701,10 @@ void simpliciti_sync_decode_ap_cmd_callback(void)
 										sDate.year 			= (simpliciti_data[4]<<8) + simpliciti_data[5];
 										sDate.month 		= simpliciti_data[6];
 										sDate.day 			= simpliciti_data[7];
+										#ifdef CONFIG_ALARM
 										sAlarm.hour			= simpliciti_data[8];
 										sAlarm.minute		= simpliciti_data[9];
+										#endif
 										// Set temperature and temperature offset
 										t1 = (s16)((simpliciti_data[10]<<8) + simpliciti_data[11]);
 										offset = t1 - (sTemp.degrees - sTemp.offset);
@@ -713,7 +719,9 @@ void simpliciti_sync_decode_ap_cmd_callback(void)
 										if(sSidereal_time.sync>0)
 											sync_sidereal();
 #endif
-
+#ifdef CONFIG_USE_SYNC_TOSET_TIME
+										simpliciti_flag |= SIMPLICITI_TRIGGER_STOP;
+#endif
 										break;
 												
 		case SYNC_AP_CMD_GET_MEMORY_BLOCKS_MODE_1:	
@@ -774,8 +782,13 @@ void simpliciti_sync_get_data_callback(unsigned int index)
 										simpliciti_data[5]  = sDate.year & 0xFF;
 										simpliciti_data[6]  = sDate.month;
 										simpliciti_data[7]  = sDate.day;
+										#ifdef CONFIG_ALARM
 										simpliciti_data[8]  = sAlarm.hour;
 										simpliciti_data[9]  = sAlarm.minute;
+										#else
+										simpliciti_data[8]  = 4;
+										simpliciti_data[9]  = 30;
+										#endif
 										simpliciti_data[10] = sTemp.degrees >> 8;
 										simpliciti_data[11] = sTemp.degrees & 0xFF;
 #ifdef CONFIG_ALTITUDE
