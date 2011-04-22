@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXFileReference section */
+		0F2673C612F2D13E00787201 /* gps.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = gps.c; sourceTree = "<group>"; };
+		0F2673C712F2D13E00787201 /* gps.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = gps.h; sourceTree = "<group>"; };
 		0FD6124612A3A7C300DE2B9F /* BlueRobin_RX_433MHz.r43 */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlueRobin_RX_433MHz.r43; sourceTree = "<group>"; };
 		0FD6124712A3A7C300DE2B9F /* BlueRobin_RX_868MHz.r43 */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlueRobin_RX_868MHz.r43; sourceTree = "<group>"; };
 		0FD6124812A3A7C300DE2B9F /* BlueRobin_RX_915MHz.r43 */ = {isa = PBXFileReference; lastKnownFileType = file; path = BlueRobin_RX_915MHz.r43; sourceTree = "<group>"; };
@@ -317,6 +319,8 @@
 				0FD6128512A3A7C300DE2B9F /* date.h */,
 				0FD6128612A3A7C300DE2B9F /* eggtimer.c */,
 				0FD6128712A3A7C300DE2B9F /* eggtimer.h */,
+				0F2673C612F2D13E00787201 /* gps.c */,
+				0F2673C712F2D13E00787201 /* gps.h */,
 				0FD6128812A3A7C300DE2B9F /* menu.c */,
 				0FD6128912A3A7C300DE2B9F /* menu.h */,
 				0FD6128A12A3A7C300DE2B9F /* MYsimpliciti.c */,
