@@ -3,7 +3,6 @@
  *  OpenChronos
  *
  *  Created by Thomas Post on 26.11.10.
- *  Copyright 2010 equinux AG. All rights reserved.
  *
  */
 
