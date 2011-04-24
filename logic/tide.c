@@ -70,9 +70,9 @@ void update_tide_timer() {
 }
 
 u32 timeInSeconds(struct tide theTide) {
-	u32 result = theTide.secondsLeft;
-	result += theTide.minutesLeft * 60;
-	result += theTide.hoursLeft * (u16)3600;
+	u32 result = (u32)theTide.secondsLeft;
+	result += (u32)theTide.minutesLeft * (u32)60;
+	result += (u32)theTide.hoursLeft * (u32)3600;
 	return result;
 }
 
@@ -87,7 +87,7 @@ u32 timeNowInSeconds() {
 struct tide timeFromSeconds(u32 seconds) {
 	struct tide newTide;
 	newTide.hoursLeft = seconds/3600;
-	u32 hoursInSeconds = newTide.hoursLeft*(u32)3600;
+	u32 hoursInSeconds = (u32)newTide.hoursLeft*(u32)3600;
 	seconds -= hoursInSeconds;
 	
 	newTide.minutesLeft = seconds/60;
@@ -103,7 +103,7 @@ void tide_tick() {
 		aTide = timeFromSeconds(fullTideTime);
 		init = 1;
 	}
-	u16 tideInSecondes =  aTide.secondsLeft + aTide.minutesLeft * 60 + aTide.hoursLeft * (u16)3600;
+	u32 tideInSecondes =  timeInSeconds(aTide);
 	graphOffset = (fullTideTime - tideInSecondes)/((u16)11175);
 	
 	if (aTide.secondsLeft == 0) {
